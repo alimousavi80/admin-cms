@@ -6,16 +6,16 @@ export {
     toeasNotificationtHandler,
 };
 
-const insertHtmlTemplate = (array, wrapper) => {
+const insertHtmlTemplate = (array, wrapper, pageCount = 1) => {
     wrapper.innerHTML = "";
 
-    array.forEach((course) => {
+    array.forEach((course, index) => {
         wrapper.insertAdjacentHTML(
             "beforeend",
             `                    
                 <tr>
                     <td class="px-4 py-3 font-medium">
-                        ${course.id}
+                        ${pageCount === 1 ? index + 1 : (pageCount - 1) * 5 + index + 1}
                     </td>
                     <td class="px-4 py-3 font-medium">
                         ${course.courseName}
@@ -93,7 +93,9 @@ const receiveAllCourses = async () => {
 
     const result = await res.json();
 
-    return result;
+    // use toreversed for new courses become first
+
+    return result.toReversed();
 };
 
 const toeasNotificationtHandler = () => {
@@ -111,5 +113,5 @@ const toeasNotificationtHandler = () => {
             progressBar.style.width = "0%";
             toestElem.classList.add("hidden");
         }
-    }, 25);
+    }, 35);
 };

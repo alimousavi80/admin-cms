@@ -19,7 +19,6 @@ let status = "در حال ضبط";
 
 window.addEventListener("load", () => {
     receiveAllCourses().then((data) => {
-        console.log(data);
         let paginatedCourses = pagination(data, paginationWrapper, 5, 1);
         insertHtmlTemplate(paginatedCourses, tableWrapper);
     });
@@ -64,18 +63,23 @@ const addNewCourseHandler = (e) => {
             Prefer: "return=representation",
         },
         body: JSON.stringify(data),
-    })
-        .then((res) => {
-            console.log(res);
-            if (res.status === 201) {
-                buttonHandler("close");
-                toeasNotificationtHandler();
-            }
-            return res.json();
-        })
-        .then((result) => console.log(result));
-
-    console.log(data);
+    }).then((res) => {
+        console.log(res);
+        if (res.status === 201) {
+            buttonHandler("close");
+            toeasNotificationtHandler();
+            receiveAllCourses().then((data) => {
+                let paginatedCourses = pagination(
+                    data,
+                    paginationWrapper,
+                    5,
+                    1,
+                );
+                insertHtmlTemplate(paginatedCourses, tableWrapper);
+            });
+        }
+        return res.json();
+    });
 };
 
 const buttonHandler = (status) => {
