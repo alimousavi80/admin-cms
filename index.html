@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Admin Cms</title>
+        <link rel="stylesheet" href="./src/css/output.css" />
+
+        <!-- preventing flash for changing theme -->
+
+        <script>
+            const localTheme = localStorage.getItem("theme");
+            if (localTheme) {
+                document.documentElement.className = localTheme;
+            }
+        </script>
+    </head>
+
+    <body>
+        <!------------------------------------ svg sprite ------------------------------------>
+
+        <svg class="hidden">
+            <symbol id="sun-icon">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+                    />
+                </svg>
+            </symbol>
+            <symbol id="moon-icon">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
+                    />
+                </svg>
+            </symbol>
+            <symbol id="bell-icon">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
+                    />
+                </svg>
+            </symbol>
+            <symbol id="x-mark-icon">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M6 18 18 6M6 6l12 12"
+                    />
+                </svg>
+            </symbol>
+        </svg>
+
+        <!------------------------------------ modal ------------------------------------>
+
+        <div
+            id="modal"
+            class="hidden fixed inset-0 z-50 items-center justify-center bg-black/40 p-4 backdrop-blur-xs"
+        >
+            <div dir="rtl" class="neu-card w-full max-w-md">
+                <div class="mb-6 flex items-center justify-between gap-4">
+                    <h2 id="course-modal-title" class="text-lg font-semibold">
+                        افزودن دوره
+                    </h2>
+                    <button type="button" class="neu-icon-btn close-modal-btn">
+                        <svg class="size-7">
+                            <use href="#x-mark-icon"></use>
+                        </svg>
+                    </button>
+                </div>
+
+                <form id="course-form" class="flex flex-col gap-6" novalidate>
+                    <div class="flex flex-col gap-2">
+                        <label for="course-name" class="text-sm font-medium"
+                            >نام دوره</label
+                        >
+                        <input
+                            id="course-name"
+                            type="text"
+                            class="neu-input"
+                            placeholder="مثلاً: آموزش ری‌اکت"
+                            autocomplete="off"
+                            required
+                        />
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label for="course-creator" class="text-sm font-medium"
+                            >مدرس</label
+                        >
+                        <input
+                            id="course-creator"
+                            type="text"
+                            class="neu-input"
+                            placeholder="نام مدرس"
+                            autocomplete="off"
+                            required
+                        />
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label for="course-price" class="text-sm font-medium"
+                            >قیمت</label
+                        >
+                        <div class="relative">
+                            <input
+                                id="course-price"
+                                type="number"
+                                class="neu-input pe-16"
+                                placeholder="5000000"
+                                required
+                            />
+                            <span
+                                class="pointer-events-none absolute inset-y-0 end-4 flex items-center text-sm text-ink-muted"
+                                >تومان</span
+                            >
+                        </div>
+                    </div>
+
+                    <fieldset class="flex flex-col gap-3">
+                        <legend class="mb-1 text-sm font-medium">وضعیت</legend>
+                        <div class="flex gap-4">
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="status"
+                                    value="تکمیل شده"
+                                    class="peer sr-only"
+                                    id="complete-radio-item"
+                                    required
+                                />
+                                <span
+                                    class="neu-chip neu-chip-success cursor-pointer px-4 py-2 text-sm opacity-60 peer-checked:opacity-100 peer-checked:shadow-neu-inset peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-accent"
+                                    >تکمیل شده</span
+                                >
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="status"
+                                    value="در حال ضبط"
+                                    class="peer sr-only"
+                                    id="recording-radio-item"
+                                />
+                                <span
+                                    class="neu-chip neu-chip-warning cursor-pointer px-4 py-2 text-sm opacity-60 peer-checked:opacity-100 peer-checked:shadow-neu-inset peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-accent"
+                                    >در حال ضبط</span
+                                >
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <p
+                        id="form-error"
+                        class="min-h-5 text-sm text-red-600 dark:text-red-400"
+                    ></p>
+
+                    <div class="flex gap-4">
+                        <button
+                            type="submit"
+                            id="add-course-btn"
+                            class="neu-btn neu-btn-accent"
+                        >
+                            ذخیره دوره
+                        </button>
+                        <button
+                            type="button"
+                            data-close
+                            class="neu-btn close-modal-btn"
+                        >
+                            انصراف
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!----------------------------- toast nnotification ----------------------------->
+        <article
+            class="hidden absolute top-20 left-0 right-0 mx-auto neu-card w-70 toest text-center"
+        >
+            <p>با موفقعیت دوره تازه ثبت شد</p>
+            <div
+                class="progress h-1.5 rounded-b-md bg-green-500 absolute bottom-0 left-0"
+            ></div>
+        </article>
+
+        <!------------------------------- all countainer ------------------------------->
+
+        <div class="mx-auto relative flex min-h-screen max-w-7xl gap-8 p-6">
+            <!--------------------------------- Sidebar --------------------------------->
+
+            <aside class="neu-card hidden w-64 shrink-0 flex-col gap-8 lg:flex">
+                <a href="./index.html" class="px-4 text-xl font-bold"
+                    >پنل مدیریت</a
+                >
+                <nav class="flex flex-col gap-3">
+                    <a href="#" class="neu-nav-item">دوره ها</a>
+                    <a href="#" class="neu-nav-item">کاربران</a>
+                </nav>
+            </aside>
+
+            <div class="flex min-w-0 flex-1 flex-col gap-8">
+                <!---------------------------------- Top bar ---------------------------------->
+
+                <header class="flex items-center gap-6">
+                    <input
+                        type="search"
+                        class="neu-input"
+                        placeholder="Search posts, pages, media"
+                    />
+
+                    <!-- notification buttons -->
+
+                    <!-- bell notification -->
+
+                    <div class="relative" id="notification-btn">
+                        <div class="neu-icon-btn">
+                            <svg class="size-7">
+                                <use href="#bell-icon"></use>
+                            </svg>
+                        </div>
+
+                        <!-- notification counts -->
+
+                        <div
+                            class="absolute -bottom-1 -right-1 bg-surface min-w-5.5 min-h-5.5 rounded-full flex items-center justify-center"
+                        >
+                            3
+                        </div>
+
+                        <!-- notification box -->
+
+                        <div
+                            class="neu-card absolute top-13 hidden"
+                            id="notification-box"
+                        >
+                            <ul
+                                class="space-y-2 min-w-50 *:max-w-50 *:break-words *:line-clamp-2 *:overflow-y-auto"
+                            >
+                                <li class="neu-well">
+                                    لطفا فلان کار را انجام بدهید و دوره فلان را
+                                    به سایت اضافه کنید .
+                                </li>
+                                <li class="neu-well">
+                                    دوره ری اکت را به روز رسانی کنید
+                                </li>
+                                <li class="neu-well">به کانت ها پاسخ بدهید</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- change theme buttons -->
+
+                    <button
+                        id="theme-toggle"
+                        type="button"
+                        class="neu-icon-btn"
+                    >
+                        <svg class="size-7 hidden dark:block">
+                            <use href="#sun-icon"></use>
+                        </svg>
+
+                        <svg class="size-6 dark:hidden">
+                            <use href="#moon-icon"></use>
+                        </svg>
+                    </button>
+                </header>
+
+                <!------------------------------------ main ------------------------------------>
+
+                <main class="flex flex-col gap-8">
+                    <h1 class="text-2xl font-bold">Dashboard</h1>
+
+                    <!-- Stats -->
+                    <section class="grid gap-8 grid-cols-2">
+                        <div class="neu-card">
+                            <p class="text-sm text-ink-muted">تعداد دوره ها</p>
+                            <p
+                                class="mt-2 text-3xl font-bold"
+                                id="courses-count"
+                            >
+                                <!-- loaded from js -->
+                            </p>
+                        </div>
+                        <div class="neu-card">
+                            <p class="text-sm text-ink-muted">تعداد کاربران</p>
+                            <p class="mt-2 text-3xl font-bold" id="users-count">
+                                20
+                                <!-- loaded from js -->
+                            </p>
+                        </div>
+                    </section>
+
+                    <div>
+                        <!-- Recent content -->
+                        <section class="neu-card xl:col-span-2">
+                            <div
+                                class="mb-6 flex items-center justify-between gap-4"
+                            >
+                                <h2 class="text-lg font-semibold">
+                                    Recent content
+                                </h2>
+                                <button
+                                    type="button"
+                                    id="open-modal-btn"
+                                    class="neu-btn"
+                                >
+                                    افزودن دوره
+                                </button>
+                            </div>
+
+                            <div class="neu-well overflow-x-auto">
+                                <table class="w-full text-left text-sm">
+                                    <thead class="text-ink-muted text-center">
+                                        <tr class="border-b border-ink/10">
+                                            <th class="px-4 py-3 font-medium">
+                                                شماره
+                                            </th>
+                                            <th class="px-4 py-3 font-medium">
+                                                نام دوره
+                                            </th>
+                                            <th class="px-4 py-3 font-medium">
+                                                مدرس
+                                            </th>
+                                            <th class="px-4 py-3 font-medium">
+                                                وضعیت
+                                            </th>
+                                            <th class="px-4 py-3 font-medium">
+                                                قیمت
+                                            </th>
+                                            <th class="px-4 py-3 font-medium">
+                                                اخرین آپدیت
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody
+                                        class="divide-y divide-ink/10 *:text-center"
+                                        id="table-wrapper"
+                                    >
+                                        <!-- loaded from js -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- pagination -->
+
+                            <div
+                                class="flex gap-x-3 w-fit mx-auto mt-6"
+                                id="pagination-container"
+                            >
+                                <!-- Element Loaded From Js -->
+                            </div>
+                        </section>
+                    </div>
+                </main>
+            </div>
+        </div>
+        <script src="./js/themeHandler.js"></script>
+        <script src="./js/shared.js" type="module"></script>
+        <script src="./js/main.js" type="module"></script>
+    </body>
+</html>

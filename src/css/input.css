@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  html {
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/***************************** themes *****************************/
+
+@layer base {
+  :root {
+    --neu-bg: var(--color-slate-200);
+    --neu-light: #ffffff;
+    --neu-dark: var(--color-slate-400);
+    --neu-text: var(--color-slate-700);
+    --neu-muted: var(--color-slate-500);
+  }
+
+  .dark {
+    --neu-bg: var(--color-slate-800);
+    --neu-light: var(--color-slate-700);
+    --neu-dark: var(--color-slate-950);
+    --neu-text: var(--color-slate-200);
+    --neu-muted: var(--color-slate-400);
+  }
+}
+
+/* 2) Tailwind tokens -> generate utilities.
+   "inline" makes utilities read var(--neu-*) at the element,
+   so dark mode works without redefining the shadows. */
+@theme inline {
+  --color-surface: var(--neu-bg);
+  --color-ink: var(--neu-text);
+  --color-ink-muted: var(--neu-muted);
+  --color-accent: var(--color-indigo-500);
+
+  /* Raised: small / medium / large */
+  --shadow-neu-sm: 3px 3px 6px var(--neu-dark), -3px -3px 6px var(--neu-light);
+  --shadow-neu: 6px 6px 12px var(--neu-dark), -6px -6px 12px var(--neu-light);
+  --shadow-neu-lg: 10px 10px 20px var(--neu-dark), -10px -10px 20px var(--neu-light);
+  /* Pressed / sunken */
+  --shadow-neu-inset: inset 6px 6px 12px var(--neu-dark), inset -6px -6px 12px var(--neu-light);
+
+  --radius-card: 1.5rem;     /* 24px: cards, panels */
+  --radius-control: 0.875rem; /* 14px: buttons, inputs */
+}
+
+/*************************** components ***************************/
+
+@layer components {
+  /* ---------- Surfaces ---------- */
+  .neu-card {
+    @apply rounded-card bg-surface p-6 shadow-neu-lg;
+  }
+
+  .neu-well {
+    @apply rounded-card bg-surface p-4 shadow-neu-inset;
+  }
+
+  /* ---------- Buttons ---------- */
+  .neu-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-control bg-surface px-5 py-3
+      font-medium text-ink shadow-neu transition-shadow duration-200
+      hover:shadow-neu-sm active:shadow-neu-inset
+      focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent
+      disabled:pointer-events-none disabled:opacity-50 disabled:shadow-neu-sm;
+  }
+
+  .neu-btn-accent {
+    @apply bg-accent text-white;
+  }
+
+  .neu-icon-btn {
+    @apply grid size-11 shrink-0 place-items-center rounded-full bg-surface text-ink shadow-neu
+      transition-shadow duration-200
+      hover:shadow-neu-sm active:shadow-neu-inset
+      focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent
+      disabled:pointer-events-none disabled:opacity-50 disabled:shadow-neu-sm;
+  }
+
+  /* ---------- Form controls ---------- */
+  .neu-input {
+    @apply w-full rounded-control bg-surface px-4 py-3 text-ink shadow-neu-inset outline-none
+      transition-shadow duration-200 placeholder:text-ink-muted
+      focus:ring-2 focus:ring-accent
+      disabled:opacity-50;
+  }
+
+  /* Toggle: <label class="neu-toggle"><input class="sr-only" type="checkbox"><span class="neu-toggle-track"></span>…</label> */
+  .neu-toggle {
+    @apply inline-flex cursor-pointer items-center gap-3;
+  }
+
+  .neu-toggle-track {
+    @apply relative inline-block h-8 w-14 shrink-0 rounded-full bg-surface shadow-neu-inset
+      transition-shadow duration-200;
+  }
+
+  .neu-toggle-track::after {
+    content: "";
+    @apply absolute left-1 top-1 size-6 rounded-full bg-surface shadow-neu-sm
+      transition-transform duration-200;
+  }
+
+  .neu-toggle input:checked + .neu-toggle-track::after {
+    @apply translate-x-6 bg-accent;
+  }
+
+  .neu-toggle input:focus-visible + .neu-toggle-track {
+    @apply ring-2 ring-accent;
+  }
+
+  /* ---------- Navigation ---------- */
+  .neu-nav-item {
+    @apply block rounded-control px-4 py-3 font-medium text-ink-muted transition-shadow duration-200
+      hover:text-ink hover:shadow-neu-sm
+      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+  }
+
+  .neu-nav-item[aria-current="page"] {
+    @apply text-accent shadow-neu-inset;
+  }
+
+  /* ---------- Chips / status ---------- */
+  .neu-chip {
+    @apply inline-flex items-center rounded-full bg-surface px-3 py-1 text-xs font-semibold shadow-neu-sm;
+  }
+
+  .neu-chip-success {
+    @apply text-emerald-700 dark:text-emerald-400;
+  }
+
+  .neu-chip-warning {
+    @apply text-amber-700 dark:text-amber-400;
+  }
+}
+
