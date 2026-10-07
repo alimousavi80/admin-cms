@@ -1,6 +1,8 @@
 <div dir="rtl">
 <h1 align="center">ADMIN-CMS</h1>
 </br>
+  <img width="1920" height="1080" alt="Admin Cms - Google Chrome 10_7_2026 7_28_40 PM" src="https://github.com/user-attachments/assets/9f95225a-404b-4d93-9bdf-5726dcccdfeb" />
+</br>
 </br>
 <h2 align="center">: DESCRIPTION</h2>
 </br>
