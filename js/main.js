@@ -26,6 +26,6 @@ window.addEventListener("load", () => {
 
 openAddCourseModal.addEventListener("click", () => {
     modalHandler("addCourse");
-    newCoursePrepareForm();
     buttonHandler("open");
+    newCoursePrepareForm();
 });
