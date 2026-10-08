@@ -78,7 +78,8 @@
       font-medium text-ink shadow-neu transition-shadow duration-200
       hover:shadow-neu-sm active:shadow-neu-inset
       focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent
-      disabled:pointer-events-none disabled:opacity-50 disabled:shadow-neu-sm;
+      disabled:pointer-events-none disabled:opacity-50 disabled:shadow-neu-sm
+      cursor-pointer;
   }
 
   .neu-btn-accent {
@@ -90,7 +91,8 @@
       transition-shadow duration-200
       hover:shadow-neu-sm active:shadow-neu-inset
       focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent
-      disabled:pointer-events-none disabled:opacity-50 disabled:shadow-neu-sm;
+      disabled:pointer-events-none disabled:opacity-50 disabled:shadow-neu-sm
+      cursor-pointer;
   }
 
   /* ---------- Form controls ---------- */
@@ -147,6 +149,10 @@
 
   .neu-chip-warning {
     @apply text-amber-700 dark:text-amber-400;
+  }
+
+  .neu-chip-delete {
+    @apply text-red-700 dark:text-red-400;
   }
 }
 

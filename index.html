@@ -80,141 +80,55 @@
                     />
                 </svg>
             </symbol>
+            <symbol id="edit-icon">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                    />
+                </svg>
+            </symbol>
+            <symbol id="trash-icon">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                    />
+                </svg>
+            </symbol>
         </svg>
 
         <!------------------------------------ modal ------------------------------------>
 
         <div
-            id="modal"
+            id="modal-container"
             class="hidden fixed inset-0 z-50 items-center justify-center bg-black/40 p-4 backdrop-blur-xs"
         >
-            <div dir="rtl" class="neu-card w-full max-w-md">
-                <div class="mb-6 flex items-center justify-between gap-4">
-                    <h2 id="course-modal-title" class="text-lg font-semibold">
-                        افزودن دوره
-                    </h2>
-                    <button type="button" class="neu-icon-btn close-modal-btn">
-                        <svg class="size-7">
-                            <use href="#x-mark-icon"></use>
-                        </svg>
-                    </button>
-                </div>
-
-                <form id="course-form" class="flex flex-col gap-6" novalidate>
-                    <div class="flex flex-col gap-2">
-                        <label for="course-name" class="text-sm font-medium"
-                            >نام دوره</label
-                        >
-                        <input
-                            id="course-name"
-                            type="text"
-                            class="neu-input"
-                            placeholder="مثلاً: آموزش ری‌اکت"
-                            autocomplete="off"
-                            required
-                        />
-                    </div>
-
-                    <div class="flex flex-col gap-2">
-                        <label for="course-creator" class="text-sm font-medium"
-                            >مدرس</label
-                        >
-                        <input
-                            id="course-creator"
-                            type="text"
-                            class="neu-input"
-                            placeholder="نام مدرس"
-                            autocomplete="off"
-                            required
-                        />
-                    </div>
-
-                    <div class="flex flex-col gap-2">
-                        <label for="course-price" class="text-sm font-medium"
-                            >قیمت</label
-                        >
-                        <div class="relative">
-                            <input
-                                id="course-price"
-                                type="number"
-                                class="neu-input pe-16"
-                                placeholder="5000000"
-                                required
-                            />
-                            <span
-                                class="pointer-events-none absolute inset-y-0 end-4 flex items-center text-sm text-ink-muted"
-                                >تومان</span
-                            >
-                        </div>
-                    </div>
-
-                    <fieldset class="flex flex-col gap-3">
-                        <legend class="mb-1 text-sm font-medium">وضعیت</legend>
-                        <div class="flex gap-4">
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="status"
-                                    value="تکمیل شده"
-                                    class="peer sr-only"
-                                    id="complete-radio-item"
-                                    required
-                                />
-                                <span
-                                    class="neu-chip neu-chip-success cursor-pointer px-4 py-2 text-sm opacity-60 peer-checked:opacity-100 peer-checked:shadow-neu-inset peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-accent"
-                                    >تکمیل شده</span
-                                >
-                            </label>
-
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="status"
-                                    value="در حال ضبط"
-                                    class="peer sr-only"
-                                    id="recording-radio-item"
-                                />
-                                <span
-                                    class="neu-chip neu-chip-warning cursor-pointer px-4 py-2 text-sm opacity-60 peer-checked:opacity-100 peer-checked:shadow-neu-inset peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-accent"
-                                    >در حال ضبط</span
-                                >
-                            </label>
-                        </div>
-                    </fieldset>
-
-                    <p
-                        id="form-error"
-                        class="min-h-5 text-sm text-red-600 dark:text-red-400"
-                    ></p>
-
-                    <div class="flex gap-4">
-                        <button
-                            type="submit"
-                            id="add-course-btn"
-                            class="neu-btn neu-btn-accent"
-                        >
-                            ذخیره دوره
-                        </button>
-                        <button
-                            type="button"
-                            data-close
-                            class="neu-btn close-modal-btn"
-                        >
-                            انصراف
-                        </button>
-                    </div>
-                </form>
-            </div>
+            <!-- loaded from js -->
         </div>
 
         <!----------------------------- toast nnotification ----------------------------->
         <article
-            class="hidden absolute top-20 left-0 right-0 mx-auto neu-card w-70 toest text-center"
+            class="hidden absolute top-20 left-0 right-0 mx-auto neu-card w-70 toest text-center overflow-hidden"
         >
-            <p>با موفقعیت دوره تازه ثبت شد</p>
             <div
-                class="progress h-1.5 rounded-b-md bg-green-500 absolute bottom-0 left-0"
+                class="progress h-3 rounded-card bg-emerald-700 dark:bg-emerald-400 absolute bottom-0 left-0"
             ></div>
+            <p id="progress-text" class="">با موفقعیت دوره تازه ثبت شد</p>
         </article>
 
         <!------------------------------- all countainer ------------------------------->
@@ -331,7 +245,7 @@
                                 class="mb-6 flex items-center justify-between gap-4"
                             >
                                 <h2 class="text-lg font-semibold">
-                                    Recent content
+                                    دوره های اخیر
                                 </h2>
                                 <button
                                     type="button"
@@ -341,6 +255,8 @@
                                     افزودن دوره
                                 </button>
                             </div>
+
+                            <!----------------------------------- table ----------------------------------->
 
                             <div class="neu-well overflow-x-auto">
                                 <table class="w-full text-left text-sm">
@@ -363,6 +279,16 @@
                                             </th>
                                             <th class="px-4 py-3 font-medium">
                                                 اخرین آپدیت
+                                            </th>
+                                            <th
+                                                class="px-4 py-3 font-medium text-amber-700 dark:text-amber-400"
+                                            >
+                                                ویرایش
+                                            </th>
+                                            <th
+                                                class="px-4 py-3 font-medium text-red-700 dark:text-red-400"
+                                            >
+                                                حذف
                                             </th>
                                         </tr>
                                     </thead>
