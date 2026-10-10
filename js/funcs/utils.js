@@ -292,6 +292,7 @@ const toeasNotificationtHandler = (typeOfToeast) => {
     toestElem.classList.remove("hidden");
 
     let progressWidth = 0;
+
     const interval = setInterval(function () {
         progressWidth++;
         progressBar.style.width = `${progressWidth}%`;
@@ -300,7 +301,7 @@ const toeasNotificationtHandler = (typeOfToeast) => {
             progressBar.style.width = "0%";
             toestElem.classList.add("hidden");
         }
-    }, 35);
+    }, 30);
 };
 
 const modalHandler = (
@@ -565,7 +566,7 @@ const modalHandler = (
                             </label>
                         </div>
                     </fieldset>
-                    
+
                     <div class="flex justify-around">
                         <button
                             onclick="updateCourseHandler(${courseId})"
