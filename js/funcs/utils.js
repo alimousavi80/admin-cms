@@ -361,19 +361,23 @@ const modalHandler = (
                         <label for="course-price" class="text-sm font-medium"
                             >قیمت</label
                         >
-                        <div class="relative">
                             <input
+                                oninput="priceCounter(event)"
                                 id="course-price"
-                                type="number"
-                                class="neu-input pe-16"
+                                type="text"
+                                inputmode="numeric"
+                                class="neu-input pe-1"
                                 placeholder="5000000"
                                 required
                             />
+                            <div class="flex justify-between">
+            
                             <span
-                                class="pointer-events-none absolute inset-y-0 end-4 flex items-center text-sm text-ink-muted"
-                                >تومان</span
+                                id="price-counter"
+                                class="pointer-events-none min-h-5 flex items-center text-sm text-ink-muted"
+                                ></span
                             >
-                        </div>
+                            </div>
                     </div>
 
                     <fieldset class="flex flex-col gap-3">
@@ -409,13 +413,7 @@ const modalHandler = (
                             </label>
                         </div>
                     </fieldset>
-
-                    <p
-                        id="form-error"
-                        class="min-h-5 text-sm text-red-600 dark:text-red-400"
-                    ></p>
-
-                    <div class="flex justify-around">
+                    <div class="flex justify-around mt-5">
                         <button
                             onclick="addNewCourseHandler(event)"
                             type="button"
@@ -515,20 +513,21 @@ const modalHandler = (
                         <label for="course-price" class="text-sm font-medium"
                             >قیمت</label
                         >
-                        <div class="relative">
                             <input
+                                oninput="priceCounter(event)"
                                 id="course-price"
-                                value = ${+coursePrice}
-                                type="number"
+                                value = ${coursePrice}
+                                type="text"
+                                inputmode="numeric"
                                 class="neu-input pe-16"
                                 placeholder="5000000"
                                 required
                             />
                             <span
-                                class="pointer-events-none absolute inset-y-0 end-4 flex items-center text-sm text-ink-muted"
-                                >تومان</span
+                                id = "price-counter"
+                                class="pointer-events-none min-h-5 flex items-center text-sm text-ink-muted"
+                                ></span
                             >
-                        </div>
                     </div>
 
                     <fieldset class="flex flex-col gap-3">
@@ -566,12 +565,7 @@ const modalHandler = (
                             </label>
                         </div>
                     </fieldset>
-
-                    <p
-                        id="form-error"
-                        class="min-h-5 text-sm text-red-600 dark:text-red-400"
-                    ></p>
-
+                    
                     <div class="flex justify-around">
                         <button
                             onclick="updateCourseHandler(${courseId})"
@@ -596,3 +590,94 @@ const modalHandler = (
     }
 };
 window.modalHandler = modalHandler;
+
+const priceCounter = (e) => {
+    const ones = [
+        "",
+        "یک",
+        "دو",
+        "سه",
+        "چهار",
+        "پنج",
+        "شش",
+        "هفت",
+        "هشت",
+        "نه",
+        "ده",
+        "یازده",
+        "دوازده",
+        "سیزده",
+        "چهارده",
+        "پانزده",
+        "شانزده",
+        "هفده",
+        "هجده",
+        "نوزده",
+    ];
+    const tens = [
+        "",
+        "",
+        "بیست",
+        "سی",
+        "چهل",
+        "پنجاه",
+        "شصت",
+        "هفتاد",
+        "هشتاد",
+        "نود",
+    ];
+    const hundreds = [
+        "",
+        "صد",
+        "دویست",
+        "سیصد",
+        "چهارصد",
+        "پانصد",
+        "ششصد",
+        "هفتصد",
+        "هشتصد",
+        "نهصد",
+    ];
+    const scales = ["", "هزار", "میلیون", "میلیارد"];
+
+    const threeDigits = (n) => {
+        const parts = [];
+        if (n >= 100) parts.push(hundreds[Math.floor(n / 100)]);
+        n %= 100;
+        if (n >= 20) {
+            parts.push(tens[Math.floor(n / 10)]);
+            n %= 10;
+        }
+        if (n > 0) parts.push(ones[n]);
+        return parts.join(" و ");
+    };
+
+    const numberToWords = (num) => {
+        if (num === 0) return "صفر";
+        const parts = [];
+        let i = 0;
+        while (num > 0) {
+            const chunk = num % 1000;
+            if (chunk)
+                parts.unshift((threeDigits(chunk) + " " + scales[i]).trim());
+            num = Math.floor(num / 1000);
+            i++;
+        }
+        return parts.join(" و ");
+    };
+
+    const el = document.querySelector("#price-counter");
+
+    // ارقام فارسی و عربی را به انگلیسی تبدیل می‌کنیم
+    const fixed = e.target.value
+        .replace(/[۰-۹]/g, (d) => d.charCodeAt(0) - 1776)
+        .replace(/[٠-٩]/g, (d) => d.charCodeAt(0) - 1632);
+
+    // هر چیزی غیر از رقم (نقطه، ویرگول، حروف، منفی) حذف می‌شود
+    // و حداکثر ۱۲ رقم (تا هزار میلیارد) مجاز است
+    const digits = fixed.replace(/\D/g, "").slice(0, 12);
+    e.target.value = digits;
+
+    el.textContent = digits ? numberToWords(Number(digits)) + " تومان" : "";
+};
+window.priceCounter = priceCounter;
