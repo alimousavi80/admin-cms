@@ -2,15 +2,12 @@ export {
     pagination,
     insertHtmlTemplate,
     receiveAllCourses,
-    paginationButtonsHander,
-    toeasNotificationtHandler,
     newCoursePrepareForm,
-    addNewCourseHandler,
     buttonHandler,
     modalHandler,
 };
 
-import { statsHandler } from "../shared.js";
+import { statsHandler, toeasNotificationtHandler } from "../shared.js";
 
 const anonKey =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6YWNteHJhY2Nrc3BwdWZwb2tjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTExMzY3MjUsImV4cCI6MjEwNjcxMjcyNX0.kEP8_cHV2uPuujkt_TvICmVd7y0H_U-KxrcQRAHIAjI";
@@ -72,7 +69,7 @@ const insertHtmlTemplate = (array, wrapper, pageCount = 1) => {
                         ${course.created_at.slice(11, 19)}
                     </td>
                     <td>
-                        <button onclick="modalHandler('updateCourse', ${course.id}, '${course.courseName}', '${course.creator}', ${course.price}, '${course.status}'), newCoursePrepareForm(), priceCounter('${course.price}')" type="button" class="neu-btn py-2 px-3 text-amber-700 dark:text-amber-400">
+                        <button onclick="modalHandler('updateCourse', ${course.id}, '${course.courseName}', '${course.creator}', ${course.price}, '${course.status}'), newCoursePrepareForm(), priceCounter('${course.price}')" type="button" class="neu-btn py-2 px-3 neu-chip-warning">
                             <svg class="size-6">
                                 <use href="#edit-icon"></use>
                             </svg>
@@ -122,6 +119,7 @@ const paginationButtonsHander = (count) => {
         insertHtmlTemplate(paginatedCourses, tableWrapper, count);
     });
 };
+window.paginationButtonsHander = paginationButtonsHander;
 
 const buttonHandler = (status) => {
     if (status === "open") {
@@ -175,7 +173,7 @@ const addNewCourseHandler = () => {
         if (res.status === 201) {
             statsHandler();
             buttonHandler("close");
-            toeasNotificationtHandler("createCourse");
+            toeasNotificationtHandler("createCourse", "courses");
             receiveAllCourses().then((data) => {
                 let paginatedCourses = pagination(
                     data,
@@ -218,7 +216,7 @@ const updateCourseHandler = (courseId) => {
     }).then((res) => {
         if (res.status === 200) {
             buttonHandler("close");
-            toeasNotificationtHandler("updateCourse");
+            toeasNotificationtHandler("updateCourse", "courses");
             receiveAllCourses().then((data) => {
                 let paginatedCourses = pagination(
                     data,
@@ -247,7 +245,7 @@ const deleteCourseHandler = (couseId) => {
         },
     }).then((res) => {
         if (res.status === 200) {
-            toeasNotificationtHandler("deleteCourse");
+            toeasNotificationtHandler("deleteCourse", "courses");
             receiveAllCourses().then((data) => {
                 let paginatedCourses = pagination(
                     data,
@@ -265,44 +263,6 @@ const deleteCourseHandler = (couseId) => {
     });
 };
 window.deleteCourseHandler = deleteCourseHandler;
-
-const toeasNotificationtHandler = (typeOfToeast) => {
-    const toestElem = document.querySelector(".toest");
-    const progressBar = document.querySelector(".progress");
-    const progressText = document.querySelector("#progress-text");
-
-    if (typeOfToeast === "deleteCourse") {
-        progressText.innerHTML = "دوره با موفقعیت حذف شد";
-        progressBar.classList.remove("bg-amber-700", "dark:bg-amber-400");
-        progressBar.classList.add("bg-emerald-700", "dark:bg-emerald-400");
-    } else if (typeOfToeast === "createCourse") {
-        progressText.innerHTML = "دوره با موفقعیت ساخته شد";
-        progressBar.classList.remove("bg-amber-700", "dark:bg-amber-400");
-        progressBar.classList.add("bg-emerald-700", "dark:bg-emerald-400");
-    } else if (typeOfToeast === "updateCourse") {
-        progressText.innerHTML = "دوره با موفقعیت ویرایش شد";
-        progressBar.classList.remove("bg-amber-700", "dark:bg-amber-400");
-        progressBar.classList.add("bg-emerald-700", "dark:bg-emerald-400");
-    } else if (typeOfToeast === "eror") {
-        progressText.innerHTML = "خطا رخ داده است";
-        progressBar.classList.remove("bg-emerald-700", "dark:bg-emerald-400");
-        progressBar.classList.add("bg-amber-700", "dark:bg-amber-400");
-    }
-
-    toestElem.classList.remove("hidden");
-
-    let progressWidth = 0;
-
-    const interval = setInterval(function () {
-        progressWidth++;
-        progressBar.style.width = `${progressWidth}%`;
-        if (progressWidth === 100) {
-            clearInterval(interval);
-            progressBar.style.width = "0%";
-            toestElem.classList.add("hidden");
-        }
-    }, 30);
-};
 
 const modalHandler = (
     modalType,
