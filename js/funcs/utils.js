@@ -72,7 +72,7 @@ const insertHtmlTemplate = (array, wrapper, pageCount = 1) => {
                         ${course.created_at.slice(11, 19)}
                     </td>
                     <td>
-                        <button onclick="modalHandler('updateCourse', ${course.id}, '${course.courseName}', '${course.creator}', ${course.price}, '${course.status}'), newCoursePrepareForm()" type="button" class="neu-btn py-2 px-3 text-amber-700 dark:text-amber-400">
+                        <button onclick="modalHandler('updateCourse', ${course.id}, '${course.courseName}', '${course.creator}', ${course.price}, '${course.status}'), newCoursePrepareForm(), priceCounter('${course.price}')" type="button" class="neu-btn py-2 px-3 text-amber-700 dark:text-amber-400">
                             <svg class="size-6">
                                 <use href="#edit-icon"></use>
                             </svg>
@@ -363,7 +363,7 @@ const modalHandler = (
                             >قیمت</label
                         >
                             <input
-                                oninput="priceCounter(event)"
+                                oninput="priceCounter(event.target.value)"
                                 id="course-price"
                                 type="text"
                                 inputmode="numeric"
@@ -592,7 +592,7 @@ const modalHandler = (
 };
 window.modalHandler = modalHandler;
 
-const priceCounter = (e) => {
+const priceCounter = (price) => {
     const ones = [
         "",
         "یک",
@@ -670,14 +670,14 @@ const priceCounter = (e) => {
     const el = document.querySelector("#price-counter");
 
     // ارقام فارسی و عربی را به انگلیسی تبدیل می‌کنیم
-    const fixed = e.target.value
+    const fixed = price
         .replace(/[۰-۹]/g, (d) => d.charCodeAt(0) - 1776)
         .replace(/[٠-٩]/g, (d) => d.charCodeAt(0) - 1632);
 
     // هر چیزی غیر از رقم (نقطه، ویرگول، حروف، منفی) حذف می‌شود
     // و حداکثر ۱۲ رقم (تا هزار میلیارد) مجاز است
     const digits = fixed.replace(/\D/g, "").slice(0, 12);
-    e.target.value = digits;
+    price = digits;
 
     el.textContent = digits ? numberToWords(Number(digits)) + " تومان" : "";
 };
