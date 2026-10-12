@@ -475,7 +475,7 @@ const modalHandler = (
                             >قیمت</label
                         >
                             <input
-                                oninput="priceCounter(event)"
+                                oninput="priceCounter(event.target.value)"
                                 id="course-price"
                                 value = ${coursePrice}
                                 type="text"
