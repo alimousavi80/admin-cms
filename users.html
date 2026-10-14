@@ -110,6 +110,21 @@
                     />
                 </svg>
             </symbol>
+            <symbol id="bars-3-icon">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                    />
+                </svg>
+            </symbol>
         </svg>
 
         <!------------------------------------ modal ------------------------------------>
@@ -148,10 +163,42 @@
                 </nav>
             </aside>
 
+            <!----------------------------- Mobile Sidemenu ----------------------------->
+            <div
+                id="overlay-mobile"
+                class="fixed opacity-0 inset-0 z-50 pointer-events-none transition-opacity bg-black/40 backdrop-blur-xs"
+            >
+                <aside
+                    class="transition-transform neu-card w-70 h-full absolute translate-x-70 lg:hidden"
+                    id="side-menu-mobile"
+                >
+                    <div class="flex items-center justify-between mb-10">
+                        <a href="./index.html" class="px-4 text-xl font-bold"
+                            >پنل مدیریت</a
+                        >
+
+                        <div class="neu-icon-btn" id="close-mobile-menu-btn">
+                            <svg class="size-7.5">
+                                <use href="#x-mark-icon"></use>
+                            </svg>
+                        </div>
+                    </div>
+                    <nav class="flex flex-col gap-5">
+                        <a href="./index.html" class="neu-nav-item">دوره ها</a>
+                        <a href="./users.html" class="neu-nav-item">کاربران</a>
+                    </nav>
+                </aside>
+            </div>
+
             <div class="flex min-w-0 flex-1 flex-col gap-8">
                 <!---------------------------------- Top bar ---------------------------------->
 
                 <header class="flex items-center gap-6">
+                    <div class="lg:hidden neu-icon-btn" id="bars-menu">
+                        <svg class="size-7.5">
+                            <use href="#bars-3-icon"></use>
+                        </svg>
+                    </div>
                     <input
                         type="search"
                         class="neu-input"
