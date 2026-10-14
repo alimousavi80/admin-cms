@@ -6,6 +6,10 @@ const notificationBtn = document.querySelector("#notification-btn");
 const notificationBox = document.querySelector("#notification-box");
 const coursesCount = document.querySelector("#courses-count");
 const usersCount = document.querySelector("#users-count");
+const barsMenu = document.querySelector("#bars-menu");
+const overlayMobile = document.querySelector("#overlay-mobile");
+const sideMenuMobile = document.querySelector("#side-menu-mobile");
+const closeMobileMenuBtn = document.querySelector("#close-mobile-menu-btn");
 
 const statsHandler = () => {
     receiveAllCourses().then((data) => {
@@ -80,10 +84,31 @@ const toeasNotificationtHandler = (typeOfToeast, position = "users") => {
     }, 30);
 };
 
+const showMobileMenuHandler = () => {
+    sideMenuMobile.classList.remove("translate-x-70");
+    sideMenuMobile.classList.add("translate-x-0");
+    overlayMobile.classList.remove("opacity-0", "pointer-events-none");
+    overlayMobile.classList.add("opacity-100");
+};
+
+const hideMobileMenuHandler = () => {
+    sideMenuMobile.classList.add("translate-x-70");
+    sideMenuMobile.classList.remove("translate-x-0");
+    overlayMobile.classList.add("opacity-0", "pointer-events-none");
+    overlayMobile.classList.remove("opacity-100");
+};
+
 window.addEventListener("load", () => {
     statsHandler();
 });
 
+barsMenu.addEventListener("click", showMobileMenuHandler);
+closeMobileMenuBtn.addEventListener("click", hideMobileMenuHandler);
+overlayMobile.addEventListener("click", (e) => {
+    if (e.target.classList.contains("fixed")) {
+        hideMobileMenuHandler();
+    }
+});
 notificationBtn.addEventListener("click", () =>
     notificationBox.classList.remove("hidden"),
 );
